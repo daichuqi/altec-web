@@ -1,0 +1,24 @@
+{
+  "accuracy": "±0.2% + 1 digital",
+  "resolution": "1°C",
+  "sameple_rate": "125ms",
+  "input": {
+    "thermocouple": ["J", "K", "E", "R", "S", "B", "T"],
+    "rtd": "Pt100"
+  },
+  "output": {
+    "relay": "(No, Max. 3A 250VAC)",
+    "logic": "20V/10mA",
+    "triac": ""
+  },
+  "alarm": {
+    "relay": "(No, Max. 3A 250VAC)",
+    "modes": "upper and lower limit alarm, and deviation alarm"
+  },
+  "control_algoithm": ["ON/OFF", "PID", "PID Auto-tuning"],
+  "power_supply": ["92~262VAC", "24V AC/DC", "45/60Hz", "consumption < 3W"],
+  "environment": {
+    "temperature": "0~50°C",
+    "humidity": "≤85%"
+  }
+}

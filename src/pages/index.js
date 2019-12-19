@@ -2,32 +2,60 @@ import React from 'react'
 import { graphql } from 'gatsby'
 import get from 'lodash/get'
 import Helmet from 'react-helmet'
-import Hero from '../components/hero'
+import { Menu, Divider } from 'antd'
+
 import Layout from '../components/layout'
-import ArticlePreview from '../components/article-preview'
+import ProductPreview from '../components/product-preview'
+
+const { SubMenu } = Menu
 
 class RootIndex extends React.Component {
   render() {
-    const siteTitle = get(this, 'props.data.site.siteMetadata.title')
-    const posts = get(this, 'props.data.allContentfulBlogPost.edges')
-    const [author] = get(this, 'props.data.allContentfulPerson.edges')
+    const products = get(this, 'props.data.allContentfulProduct.edges')
+
+    console.log('this.props.location', products[0])
 
     return (
-      <Layout location={this.props.location} >
-        <div style={{ background: '#fff' }}>
-          <Helmet title={siteTitle} />
-          <Hero data={author.node} />
-          <div className="wrapper">
-            <h2 className="section-headline">Recent articles</h2>
-            <ul className="article-list">
-              {posts.map(({ node }) => {
-                return (
-                  <li key={node.slug}>
-                    <ArticlePreview article={node} />
+      <Layout location={this.props.location}>
+        <div className="home">
+          <Helmet title={'ALTEC'} />
+          <div className="menu-bar">
+            <Menu
+              defaultSelectedKeys={['1']}
+              defaultOpenKeys={['Products']}
+              mode="inline"
+            >
+              <SubMenu key="Products" title="Products">
+                <Menu.Item key="1">Temperature Controller</Menu.Item>
+                <Menu.Item key="3">Temp. Differential Controller</Menu.Item>
+                <Menu.Item key="6">Temp. & Humidity Controller</Menu.Item>
+                <Menu.Item key="2">Tension Controller</Menu.Item>
+                <Menu.Item key="4">Pressure Controller</Menu.Item>
+                <Menu.Item key="7">PH/ORP Controller</Menu.Item>
+                <Menu.Item key="5">Humidity Controller</Menu.Item>
+                <Menu.Item key="8">Winding Controller</Menu.Item>
+                <Menu.Item key="9">Weighting Controller</Menu.Item>
+                <Menu.Item key="10">Speed Controller</Menu.Item>
+              </SubMenu>
+              <Menu.Item key="11">
+                <span>About</span>
+              </Menu.Item>
+              <Menu.Item key="12">
+                <span>Contact</span>
+              </Menu.Item>
+            </Menu>
+          </div>
+          <div className="main-content">
+            <div className="wrapper">
+              {/* <h2 className="section-headline">Recent articles</h2> */}
+              <ul className="article-list">
+                {products.map(({ node }, index) => (
+                  <li className="product-container" key={index}>
+                    <ProductPreview product={node} />
                   </li>
-                )
-              })}
-            </ul>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </Layout>
@@ -39,46 +67,19 @@ export default RootIndex
 
 export const pageQuery = graphql`
   query HomeQuery {
-    site {
-      siteMetadata {
-        title
-      }
-    }
-    allContentfulBlogPost(sort: { fields: [publishDate], order: DESC }) {
-      edges {
-        node {
-          title
-          slug
-          publishDate(formatString: "MMMM Do, YYYY")
-          tags
-          heroImage {
-            fluid(maxWidth: 350, maxHeight: 196, resizingBehavior: SCALE) {
-             ...GatsbyContentfulFluid_tracedSVG
-            }
-          }
-          description {
-            childMarkdownRemark {
-              html
-            }
-          }
-        }
-      }
-    }
-    allContentfulPerson(filter: { contentful_id: { eq: "15jwOBqpxqSAOy2eOO4S0m" } }) {
+    allContentfulProduct(filter: { node_locale: { eq: "en-US" } }) {
       edges {
         node {
           name
-          shortBio {
-            shortBio
+          type
+          features {
+            content
           }
-          title
-          heroImage: image {
-            fluid(
-              maxWidth: 1180
-              maxHeight: 480
-              resizingBehavior: PAD
-              background: "rgb:000000"
-            ) {
+          description {
+            description
+          }
+          images {
+            fluid(maxWidth: 150, resizingBehavior: SCALE) {
               ...GatsbyContentfulFluid_tracedSVG
             }
           }

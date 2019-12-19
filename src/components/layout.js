@@ -1,26 +1,40 @@
-import React from 'react'
-import { Link } from 'gatsby'
-import base from './base.css'
-import Container from './container'
-import Navigation from './navigation'
+import React, { Component } from 'react'
+import { Layout as AntLayout, Button } from 'antd'
 
-class Template extends React.Component {
+import Logo from '../../assets/logo.png'
+import 'antd/dist/antd.css'
+import './layout.css'
+
+const { Content, Footer } = AntLayout
+
+export default class Layout extends Component {
   render() {
-    const { location, children } = this.props
-    let header
-
-    let rootPath = `/`
-    if (typeof __PREFIX_PATHS__ !== `undefined` && __PREFIX_PATHS__) {
-      rootPath = __PATH_PREFIX__ + `/`
-    }
+    const { children } = this.props
 
     return (
-      <Container>
-        <Navigation />
-        {children}
-      </Container>
+      <AntLayout className="layout">
+        <div className="header">
+          <div className="logo">
+            <img src={Logo} />
+          </div>
+          <div className="description">
+            <div>Shenzhen ALTEC Electronics Co., Ltd.</div>
+
+            <div>
+              Dedicate to researching and providing precision industrial process
+              controllers
+            </div>
+          </div>
+
+          <Button className="language-button" size="small">
+            English
+          </Button>
+        </div>
+        <Content style={{ padding: '0 20px' }}>
+          <div className="content-container">{children}</div>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>Altec ©2019</Footer>
+      </AntLayout>
     )
   }
 }
-
-export default Template
